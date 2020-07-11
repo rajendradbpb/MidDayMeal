@@ -1,0 +1,15 @@
+package com.goapps.midday.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice
+public class ExceptionHandlerConfiguration {
+
+	@ExceptionHandler(value = GenericException.class)
+	public ResponseEntity<?> exception(GenericException ex) {
+	      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	   }
+}
