@@ -126,6 +126,66 @@
 			"response": []
 		},
 		{
+			"name": "save-role",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"cook\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/user/role",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"role"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get-role",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"cook\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/user/role",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"role"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "get-section",
 			"request": {
 				"method": "GET",

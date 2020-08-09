@@ -8,8 +8,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionHandlerConfiguration {
 
+	/*
+	 * @ExceptionHandler(value = InvalidRequestException.class) public
+	 * ResponseEntity<?> invalidRequestExceptionProcessing(InvalidRequestException
+	 * ex) { return new ResponseEntity<>(ex.getMessage(),
+	 * HttpStatus.INTERNAL_SERVER_ERROR); }
+	 */
 	@ExceptionHandler(value = GenericException.class)
 	public ResponseEntity<?> exception(GenericException ex) {
-	      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+	      return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	   }
 }

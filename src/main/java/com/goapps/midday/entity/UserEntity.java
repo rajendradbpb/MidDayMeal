@@ -27,12 +27,13 @@ public class UserEntity {
 	
 	@Column(nullable = false,unique = true)
 	private String username;
+	
 	@Column(nullable = false)
 	private String password;
 	
-	@Column(nullable = false)
 	private long schoolId;
-//	private List<String> roles;
+	private long rollId;
+
 	@Column(nullable = false)
 	private String firstName;
 	private String lastname;
@@ -41,30 +42,6 @@ public class UserEntity {
 	private Long iIdCreatedBy;
 	private Date dEffectiveDate;
 	private Date dExpiryDate;
-	
-	
-	public UserEntity() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	
-	public UserEntity(String username, String password, String firstName, String lastname, Long iIdCreatedBy) {
-		super();
-		this.setUsername(username);
-		this.password = password;
-		this.firstName = firstName;
-		this.lastname = lastname;
-		this.iIdCreatedBy = iIdCreatedBy;
-	}
-	public UserEntity(String username, String password, String firstName, String lastname, Long iIdCreatedBy,long schoolId) {
-		super();
-		this.setUsername(username);
-		this.password = password;
-		this.firstName = firstName;
-		this.lastname = lastname;
-		this.iIdCreatedBy = iIdCreatedBy;
-		this.schoolId = schoolId;
-	}
 	
 	@PrePersist
 	void preInsert() {
@@ -75,9 +52,7 @@ public class UserEntity {
 		   this.dExpiryDate = new Date("01/01/2099");
 	   
 	   if(status == null)
-		   this.status = "Active";
-	   
-	   
+		   this.status = "inactive";
 	}
 	public Long getId() {
 		return id;
@@ -97,8 +72,15 @@ public class UserEntity {
 	 * public List<String> getRoles() { return roles; } public void
 	 * setRoles(List<String> roles) { this.roles = roles; }
 	 */
+	
 	public String getFirstName() {
 		return firstName;
+	}
+	public long getRollId() {
+		return rollId;
+	}
+	public void setRollId(long rollId) {
+		this.rollId = rollId;
 	}
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;

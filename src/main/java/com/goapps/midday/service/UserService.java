@@ -12,15 +12,23 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.goapps.midday.entity.SchoolEntity;
+import com.goapps.midday.entity.RoleEntity;
 import com.goapps.midday.entity.UserEntity;
-import com.goapps.midday.repository.SchoolRepository;
+import com.goapps.midday.exception.InvalidRequestException;
+import com.goapps.midday.mesasge.MessageConfiguration;
+import com.goapps.midday.repository.RoleRepository;
 import com.goapps.midday.repository.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	RoleRepository roleRepository;
+	
+	@Autowired
+	MessageConfiguration messageConfig;
 
 	public UserEntity saveUser(UserEntity userEntity) {
 		UserEntity savedData = userRepository.save(userEntity);
@@ -44,5 +52,25 @@ public class UserService implements UserDetailsService {
 		return new User(user.getUsername(), user.getPassword(), new ArrayList<>());
 	}
 
+	public RoleEntity saveRole(RoleEntity roleEntity) {
+		return roleRepository.save(roleEntity);
+	}
+
+	public Object getAllRole() {
+		List<RoleEntity> roles = StreamSupport.stream(roleRepository.findAll().spliterator(), false)
+				.collect(Collectors.toList());
+		return roles;
+	}
+
+	
+	public boolean validateUserData(UserEntity user) throws InvalidRequestException{
+		if(user.getRollId() == 0) {
+			throw new InvalidRequestException(messageConfig.getUserMessage().getRollIdRequired());
+		}
+		if(user.getSchoolId() == 0) {
+			throw new InvalidRequestException(messageConfig.getUserMessage().getSchoolIdRequired());
+		}
+		return true;
+	}
 
 }

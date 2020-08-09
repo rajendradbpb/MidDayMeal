@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.goapps.midday.entity.AuthRequest;
+import com.goapps.midday.entity.RoleEntity;
 import com.goapps.midday.entity.UserEntity;
 import com.goapps.midday.mesasge.UserExceptionMessage;
 import com.goapps.midday.service.SchoolService;
@@ -70,6 +71,7 @@ public class UserController {
 		try {
 			
 			LOGGER.info(userEntity.toString());
+			userService.validateUserData(userEntity);
 			userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 			savedData = userService.saveUser(userEntity);
 		} catch (Exception e) {
@@ -85,6 +87,31 @@ public class UserController {
 				return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
 //			else if(id != null)
 //				return new ResponseEntity<>(schoolService.getSchoolById(id), HttpStatus.OK);
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<>(null, HttpStatus.OK);
+	}
+	
+	@PostMapping("/user/role")
+	ResponseEntity<?> saveRole(@Validated @RequestBody RoleEntity roleEntity) {
+		RoleEntity savedData = null;
+		try {
+			
+			savedData = userService.saveRole(roleEntity);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(savedData, HttpStatus.OK);
+	}
+	
+	@GetMapping("/user/role")
+	ResponseEntity<?> getAllRole() {
+		try {
+			return new ResponseEntity<>(userService.getAllRole(), HttpStatus.OK);
 			
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
