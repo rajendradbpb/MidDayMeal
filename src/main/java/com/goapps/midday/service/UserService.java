@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.goapps.midday.config.AppConstants;
 import com.goapps.midday.entity.RoleEntity;
 import com.goapps.midday.entity.UserEntity;
 import com.goapps.midday.exception.InvalidRequestException;
@@ -69,6 +70,14 @@ public class UserService implements UserDetailsService {
 		}
 		if(user.getSchoolId() == 0) {
 			throw new InvalidRequestException(messageConfig.getUserMessage().getSchoolIdRequired());
+		}
+		// check for role
+		if(
+				!(roleRepository.findById(user.getRollId()).get().getName().equals(AppConstants.ROLE_STUDENT)
+				|| roleRepository.findById(user.getRollId()).get().getName().equals(AppConstants.ROLE_COOK) )
+				&& user.getPassword() == null
+				) {
+			throw new InvalidRequestException(messageConfig.getUserMessage().getPasswordRequired());
 		}
 		return true;
 	}

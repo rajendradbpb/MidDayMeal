@@ -3,6 +3,7 @@ package com.goapps.midday.mesasge;
 public class UserMessage {
 
 	private String idRequired;
+	private String passwordRequired;
 	private String usernameRequired;
 	private String rollIdRequired;
 	private String schoolIdRequired;
@@ -33,6 +34,12 @@ public class UserMessage {
 	}
 	public void setSchoolIdRequired(String schoolIdRequired) {
 		this.schoolIdRequired = schoolIdRequired;
+	}
+	public String getPasswordRequired() {
+		return passwordRequired;
+	}
+	public void setPasswordRequired(String passwordRequired) {
+		this.passwordRequired = passwordRequired;
 	}
 	
 	
