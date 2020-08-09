@@ -16,23 +16,29 @@ import javax.persistence.Table;
 
 import com.sun.istack.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name= "school")
+@NoArgsConstructor
+@AllArgsConstructor
 public class SchoolEntity {
 
 	@Id
-	@Column(name = "iIdSchool")
+	@Column(name = "schoolId")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@NotNull
-	private String cName;
+	private String name;
 	@NotNull
-	private String cCountry;
+	private String country;
 	@NotNull
-	private String cState;
-	private String cCity;
-	private String cPinCode;
+	private String state;
+	
+	private String city;
+	private String pinCode;
 	private double fLat;
 	private double fLng;
 	private Date dEffectiveDate;
@@ -49,12 +55,7 @@ public class SchoolEntity {
 		this.users = users;
 	} */
 
-	public SchoolEntity(String cName, String cCountry, String cState) {
-		super();
-		this.cName = cName;
-		this.cCountry = cCountry;
-		this.cState = cState;
-	}
+	
 	
 	public SchoolEntity() {
 		super();
@@ -79,44 +80,46 @@ public class SchoolEntity {
 		this.id = id;
 	}
 
-	public String getcName() {
-		return cName;
+	
+
+	public String getName() {
+		return name;
 	}
 
-	public void setcName(String cName) {
-		this.cName = cName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getcCountry() {
-		return cCountry;
+	public String getCountry() {
+		return country;
 	}
 
-	public void setcCountry(String cCountry) {
-		this.cCountry = cCountry;
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
-	public String getcState() {
-		return cState;
+	public String getState() {
+		return state;
 	}
 
-	public void setcState(String cState) {
-		this.cState = cState;
+	public void setState(String state) {
+		this.state = state;
 	}
 
-	public String getcCity() {
-		return cCity;
+	public String getCity() {
+		return city;
 	}
 
-	public void setcCity(String cCity) {
-		this.cCity = cCity;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
-	public String getcPinCode() {
-		return cPinCode;
+	public String getPinCode() {
+		return pinCode;
 	}
 
-	public void setcPinCode(String cPinCode) {
-		this.cPinCode = cPinCode;
+	public void setPinCode(String pinCode) {
+		this.pinCode = pinCode;
 	}
 
 	public double getfLat() {

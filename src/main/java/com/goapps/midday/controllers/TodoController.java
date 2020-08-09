@@ -37,13 +37,7 @@ public class TodoController implements Runnable{
 	public void run() {
 		LOG.info("saving school data");
 		// save school data
-		SchoolEntity savedSchool = schoolService.saveSchool(new SchoolEntity("test1", "india", "odisha"));
 		
-		// save user data
-//		userService.saveUser(new UserEntity("user1", "user1", "user1", "lastname1", 1, savedSchool));
-		userService.saveUser(new UserEntity("user1", "user1", "user1", "lastname1", 1l, 1));
-		userService.saveUser(new UserEntity("user2", "user2", "user2", "lastname2", 1l, 1));
-		LOG.info("saved user data");
 	}
 	
 	

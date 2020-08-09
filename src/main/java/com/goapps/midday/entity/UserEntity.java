@@ -20,7 +20,7 @@ import javax.persistence.Table;
 public class UserEntity {
 
 	@Id
-	@Column(name = "iIdUser")
+	@Column(name = "userId")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	

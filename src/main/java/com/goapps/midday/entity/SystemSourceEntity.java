@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class SystemSourceEntity {
 
 	@Id
-	@Column(name = "iIdSystemSource",nullable = false)
+	@Column(name = "systemSourceId",nullable = false)
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	

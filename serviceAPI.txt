@@ -5,6 +5,19 @@ School:
 	generating attaidance report based on student, teacher, meal, cook
 	
 	
+	get list of class of the school
+	
+	
+class:
+	save class mapping with school
+	get list of section based on school
+	
+section:
+	save section based on class
+	assign class teacher
+	add student in section
+	
+	
 User:
 	Head master:
 		configuring class and section information

@@ -15,7 +15,8 @@ import javax.persistence.Table;
 public class MealEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long iIdMeal;
+	@Column(name = "mealId")
+	private Long id;
 	
 	@Column(nullable = false)
 	private Long iIdUser;
@@ -34,7 +35,7 @@ public class MealEntity {
 	public MealEntity(Long iIdMeal, Long iIdUser, Long iIdSchool, String receipes, Date dDate, String groceries,
 			String imageBeforeCook, String imageAfterCook) {
 		super();
-		this.iIdMeal = iIdMeal;
+		this.id = iIdMeal;
 		this.iIdUser = iIdUser;
 		this.iIdSchool = iIdSchool;
 		this.receipes = receipes;
@@ -50,11 +51,12 @@ public class MealEntity {
 	       this.setdDate(new Date());
 	   
 	}
-	public Long getiIdMeal() {
-		return iIdMeal;
+	
+	public Long getId() {
+		return id;
 	}
-	public void setiIdMeal(Long iIdMeal) {
-		this.iIdMeal = iIdMeal;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	public Long getiIdUser() {
 		return iIdUser;

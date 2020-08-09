@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "class")
+@Table(name = "section")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -21,7 +21,7 @@ import lombok.Setter;
 public class SectionEntity {
 
 	@Id
-	@Column(name = "iIdSection")
+	@Column(name = "sectionId")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
@@ -30,4 +30,51 @@ public class SectionEntity {
 	
 	@Column(nullable = false)
 	private long classId;
+	
+
+	@Column(nullable = false)
+	private long classTeacherId;
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public String getSectionName() {
+		return sectionName;
+	}
+
+
+	public void setSectionName(String sectionName) {
+		this.sectionName = sectionName;
+	}
+
+
+	public long getClassId() {
+		return classId;
+	}
+
+
+	public void setClassId(long classId) {
+		this.classId = classId;
+	}
+
+
+	public long getClassTeacherId() {
+		return classTeacherId;
+	}
+
+
+	public void setClassTeacherId(long classTeacherId) {
+		this.classTeacherId = classTeacherId;
+	}
+	
+	
+	
 }
