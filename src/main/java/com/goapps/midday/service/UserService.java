@@ -2,6 +2,7 @@ package com.goapps.midday.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -43,9 +44,18 @@ public class UserService implements UserDetailsService {
 	}
 
 	public UserEntity getUserById(Long id) {
-		return userRepository.findById(id).get();
+		UserEntity user = null;
+		try {
+			Optional<UserEntity>  optional  = userRepository.findById(id);
+			user = optional.get();
+		} catch (Exception e) {
+			throw e;
+		}
+		return user;
 	}
-	
+	public UserEntity getUserByUsername(String username) {
+		return userRepository.findByUsername(username);
+	}
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -64,21 +74,30 @@ public class UserService implements UserDetailsService {
 	}
 
 	
-	public boolean validateUserData(UserEntity user) throws InvalidRequestException{
-		if(user.getRollId() == 0) {
-			throw new InvalidRequestException(messageConfig.getUserMessage().getRollIdRequired());
+	public boolean validateUserData(UserEntity user,String operation) throws InvalidRequestException{
+		switch (operation) {
+		case "save":
+		case "signup":
+			if(user.getRollId() == 0) {
+				throw new InvalidRequestException(messageConfig.getUserMessage().getRollIdRequired());
+			}
+			if(user.getSchoolId() == 0) {
+				throw new InvalidRequestException(messageConfig.getUserMessage().getSchoolIdRequired());
+			}
+			// check for role
+			if(
+					!(roleRepository.findById(user.getRollId()).get().getName().equals(AppConstants.ROLE_STUDENT)
+					|| roleRepository.findById(user.getRollId()).get().getName().equals(AppConstants.ROLE_COOK) )
+					&& user.getPassword() == null
+					) {
+				throw new InvalidRequestException(messageConfig.getUserMessage().getPasswordRequired());
+			}
+			break;
+		
+		default:
+			break;
 		}
-		if(user.getSchoolId() == 0) {
-			throw new InvalidRequestException(messageConfig.getUserMessage().getSchoolIdRequired());
-		}
-		// check for role
-		if(
-				!(roleRepository.findById(user.getRollId()).get().getName().equals(AppConstants.ROLE_STUDENT)
-				|| roleRepository.findById(user.getRollId()).get().getName().equals(AppConstants.ROLE_COOK) )
-				&& user.getPassword() == null
-				) {
-			throw new InvalidRequestException(messageConfig.getUserMessage().getPasswordRequired());
-		}
+		
 		return true;
 	}
 

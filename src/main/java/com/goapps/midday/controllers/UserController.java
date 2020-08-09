@@ -17,14 +17,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.goapps.midday.config.AppConstants;
 import com.goapps.midday.entity.AuthRequest;
 import com.goapps.midday.entity.RoleEntity;
 import com.goapps.midday.entity.UserEntity;
 import com.goapps.midday.mesasge.UserExceptionMessage;
+import com.goapps.midday.repository.UserRepository;
 import com.goapps.midday.service.SchoolService;
 import com.goapps.midday.service.UserService;
-import com.goapps.midday.utitlity.BeanFactory;
 import com.goapps.midday.utitlity.JwtUtil;
+import com.goapps.midday.valueobject.SignupUserVO;
 
 @RestController
 public class UserController {
@@ -36,8 +38,6 @@ public class UserController {
 	@Autowired
 	UserExceptionMessage userExceptionMessage;
 	
-	@Autowired
-	BeanFactory beanFactory;
 	
 	@Autowired
 	SchoolService schoolService; 
@@ -71,7 +71,7 @@ public class UserController {
 		try {
 			
 			LOGGER.info(userEntity.toString());
-			userService.validateUserData(userEntity);
+			userService.validateUserData(userEntity,"save");
 			userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 			savedData = userService.saveUser(userEntity);
 		} catch (Exception e) {
@@ -79,6 +79,23 @@ public class UserController {
 			return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(savedData, HttpStatus.OK);
+	}
+	@PostMapping("/user/signup")
+	ResponseEntity<?> signUpUser(@Validated @RequestBody SignupUserVO signupUser) {
+		UserEntity userData = null;
+		try {
+			// load user from username
+			userData = userService.getUserByUsername(signupUser.getUsername());
+			userData.setPassword(signupUser.getPassword());
+			userData.setStatus(AppConstants.STATUS_ACTIVE);
+			userService.validateUserData(userData,AppConstants.USER_OPERATION_SIGNUP);
+			userData.setPassword(passwordEncoder.encode(userData.getPassword()));
+			userData = userService.saveUser(userData);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(userData, HttpStatus.OK);
 	}
 	@GetMapping("/user")
 	ResponseEntity<?> getAllUser(@RequestParam(required = false) Long id) {
@@ -94,6 +111,8 @@ public class UserController {
 		}
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
+	
+	
 	
 	@PostMapping("/user/role")
 	ResponseEntity<?> saveRole(@Validated @RequestBody RoleEntity roleEntity) {

@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import com.goapps.midday.config.AppConstants;
+
 @Entity
 @Table(name = "User")
 public class UserEntity {
@@ -52,7 +54,7 @@ public class UserEntity {
 		   this.dExpiryDate = new Date("01/01/2099");
 	   
 	   if(status == null)
-		   this.status = "inactive";
+		   this.status = AppConstants.STATUS_INACTIVE;
 	}
 	public Long getId() {
 		return id;

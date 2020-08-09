@@ -20,6 +20,7 @@ import com.goapps.midday.entity.ClassEntity;
 import com.goapps.midday.entity.SchoolEntity;
 import com.goapps.midday.entity.SectionEntity;
 import com.goapps.midday.service.SchoolService;
+import com.goapps.midday.service.UserService;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +32,8 @@ public class SchoolController {
 	@Autowired
 	SchoolService schoolService;
 	
+	@Autowired
+	UserService userService;
 	
 	@PostMapping("/school")
 	@ApiOperation(value = "Finds Pets by status",
@@ -62,7 +65,26 @@ public class SchoolController {
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 	
-	
+	@GetMapping("/school/filter")
+	ResponseEntity<?> getSchoolByFilter(@RequestParam(required = true) String filter, @RequestParam(required = true) Long id) {
+		SchoolEntity schoolEntity = null;
+		try {
+			switch (filter) {
+			case "userId":
+				long schoolId = userService.getUserById(id).getSchoolId();
+				schoolEntity = schoolService.getSchoolById(schoolId);
+				break;
+
+			default:
+				break;
+			}
+			
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			throw e;
+		}
+		return new ResponseEntity<>(schoolEntity, HttpStatus.OK);
+	}
 	/* Start class api */
 	@PostMapping("/school/class")
 	@ApiOperation(value = "Saving class",
