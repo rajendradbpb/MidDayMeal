@@ -1,0 +1,88 @@
+Application level development:
+-----------------------------
+Er diagrame
+class diagrame
+software prerequists
+
+Implementation:
+	Logging
+	error on notification
+	saving exception
+	Lisitng out service
+	Security
+	session
+	Otp
+	Email
+	
+
+Project management
+	Sprint and milestone
+	
+
+
+
+
+School:
+--------
+
+Basic info of the school
+Need to check how and who can add school
+
+From school dash we can get count and details of its teacher(head master, teacher, class teacher, student details), cook, No of class and its sections
+
+Configuration:
+	school details
+	class and section/
+	user
+	roles to the user
+
+Users:
+	HeadMaster
+	class teacher
+	teacher
+	cook
+	student
+	cook
+	
+
+report
+	attaindance
+		teacher - principal/ class teacher/ teacher
+		student - 
+		cook
+		
+	Meal report
+	
+	report frequency - based on school/ class/ section/ period of time
+	
+
+	
+	
+
+User Operation:
+--------------
+
+Who have authority to create user ?
+register based on school
+complate registration by password reset
+forgot password
+
+
+Cook activity:
+-------------
+what details we will add in this , is it only picture or any data need to be update manully or automatic flow
+
+
+
+Doubt:
+	cook and food activity
+	regularize attaindance
+	how teacher can make their own attaindance , may be self attaindance with selfie or principal can make it
+	when student pass out how the relation will change
+	
+
+
+	
+	
+		
+	

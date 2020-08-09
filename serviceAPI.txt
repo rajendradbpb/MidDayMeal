@@ -1,0 +1,31 @@
+School:
+	save school
+	get all school and school by id or by name search
+	get teacher,head master, student, class detail, meal information etc
+	generating attaidance report based on student, teacher, meal, cook
+	
+	
+User:
+	Head master:
+		configuring class and section information
+		adding meal information
+		adding teacher
+		assign class teacher
+		adding cook information
+		getting report of meal details
+		
+		
+	Teacher:
+		
+	class teacher:
+		saving student
+		getting student attaidance. before meal and after meal confirmation
+		
+
+Meal Admin:
+	getting student attaidance.cook, before meal and after meal confirmation
+	adding cook information
+	meal report
+	upload photo before and after meal
+	
+		
