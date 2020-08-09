@@ -11,7 +11,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,8 +20,8 @@ import com.goapps.midday.config.AppConstants;
 import com.goapps.midday.entity.AuthRequest;
 import com.goapps.midday.entity.RoleEntity;
 import com.goapps.midday.entity.UserEntity;
-import com.goapps.midday.mesasge.UserExceptionMessage;
-import com.goapps.midday.repository.UserRepository;
+import com.goapps.midday.exception.InvalidRequestException;
+import com.goapps.midday.mesasge.MessageConfiguration;
 import com.goapps.midday.service.SchoolService;
 import com.goapps.midday.service.UserService;
 import com.goapps.midday.utitlity.JwtUtil;
@@ -35,10 +34,10 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	
+	
 	@Autowired
-	UserExceptionMessage userExceptionMessage;
-	
-	
+	MessageConfiguration messageConfig;
 	@Autowired
 	SchoolService schoolService; 
 	
@@ -84,6 +83,9 @@ public class UserController {
 	ResponseEntity<?> signUpUser(@Validated @RequestBody SignupUserVO signupUser) {
 		UserEntity userData = null;
 		try {
+			if(!signupUser.getPassword().equals(signupUser.getConfirmPassword())) {
+				throw new InvalidRequestException(messageConfig.getUserMessage().getPasswordConfirmPasswordNotMatched());
+			}
 			// load user from username
 			userData = userService.getUserByUsername(signupUser.getUsername());
 			userData.setPassword(signupUser.getPassword());

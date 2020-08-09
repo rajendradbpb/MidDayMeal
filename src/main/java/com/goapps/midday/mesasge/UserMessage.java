@@ -7,6 +7,7 @@ public class UserMessage {
 	private String usernameRequired;
 	private String rollIdRequired;
 	private String schoolIdRequired;
+	private String passwordConfirmPasswordNotMatched;
 	public UserMessage() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -40,6 +41,12 @@ public class UserMessage {
 	}
 	public void setPasswordRequired(String passwordRequired) {
 		this.passwordRequired = passwordRequired;
+	}
+	public String getPasswordConfirmPasswordNotMatched() {
+		return passwordConfirmPasswordNotMatched;
+	}
+	public void setPasswordConfirmPasswordNotMatched(String passwordConfirmPasswordNotMatched) {
+		this.passwordConfirmPasswordNotMatched = passwordConfirmPasswordNotMatched;
 	}
 	
 	
