@@ -29,6 +29,9 @@ public class UserEntity {
 	private String username;
 	@Column(nullable = false)
 	private String password;
+	
+	@Column(nullable = false)
+	private long schoolId;
 //	private List<String> roles;
 	@Column(nullable = false)
 	private String firstName;
@@ -39,18 +42,15 @@ public class UserEntity {
 	private Date dEffectiveDate;
 	private Date dExpiryDate;
 	
-	/* @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,optional = true )
-	@JoinColumn(referencedColumnName = "iIdSchool")
-	private SchoolEntity school; */
-	private long schoolId;
 	
 	public UserEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	public UserEntity(String username, String password, String firstName, String lastname, Long iIdCreatedBy) {
 		super();
-		this.username = username;
+		this.setUsername(username);
 		this.password = password;
 		this.firstName = firstName;
 		this.lastname = lastname;
@@ -58,7 +58,7 @@ public class UserEntity {
 	}
 	public UserEntity(String username, String password, String firstName, String lastname, Long iIdCreatedBy,long schoolId) {
 		super();
-		this.username = username;
+		this.setUsername(username);
 		this.password = password;
 		this.firstName = firstName;
 		this.lastname = lastname;
@@ -85,12 +85,7 @@ public class UserEntity {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
+	
 	public String getPassword() {
 		return password;
 	}
@@ -154,6 +149,12 @@ public class UserEntity {
 	}
 	public void setSchoolId(long schoolId) {
 		this.schoolId = schoolId;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
 	
