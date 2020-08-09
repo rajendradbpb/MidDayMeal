@@ -1,0 +1,67 @@
+
+
+User
+	super admin
+	Head master
+	class teacher
+	teacher
+	cook
+	student
+	
+Attaindance
+	isCook 
+	noCookCause
+	
+	school id
+	
+	// user common property
+	user id 
+	role
+	
+	
+	// student
+	isPresent
+	bookedMeal
+	confirmMeal
+	noMealCause
+	
+	//Cook
+	photo
+	
+	updatedBY
+	date
+	
+Meal
+	
+	schoolId
+	ration
+	before food
+	after food
+	
+	updatedBY
+	date
+	
+	
+section
+	name
+	class id
+	class teacher id
+	student list
+	
+
+class
+	name
+	schoolId
+	section list
+	
+	
+school
+	name
+	address
+	lat/long
+	class list
+	head master id
+	
+		
+	
+	
