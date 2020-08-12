@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.goapps.midday.filter.JwtFilter;
-import com.goapps.midday.service.UserService;
+import com.goapps.midday.service.user.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -48,6 +48,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
 		.antMatchers("/authenticate").permitAll()
+		.antMatchers("/admin/user").permitAll()
+		.antMatchers(
+	            "/v2/api-docs", 
+	            "/swagger-resources/**",  
+	            "/swagger-ui.html", 
+	            "/webjars/**" ,
+	             /*Probably not needed*/ "/swagger.json")
+	        .permitAll()
 		.anyRequest().authenticated()
 		.and().exceptionHandling().and().sessionManagement()		
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

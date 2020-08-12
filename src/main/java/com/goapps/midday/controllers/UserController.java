@@ -1,5 +1,7 @@
 package com.goapps.midday.controllers;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,9 +27,13 @@ import com.goapps.midday.entity.UserEntity;
 import com.goapps.midday.exception.InvalidRequestException;
 import com.goapps.midday.mesasge.MessageConfiguration;
 import com.goapps.midday.service.SchoolService;
-import com.goapps.midday.service.UserService;
+import com.goapps.midday.service.user.UserService;
+import com.goapps.midday.utitlity.Encoder;
 import com.goapps.midday.utitlity.JwtUtil;
-import com.goapps.midday.valueobject.SignupUserVO;
+import com.goapps.midday.valueobject.user.SaveUserVO;
+import com.goapps.midday.valueobject.user.SignupUserVO;
+import com.goapps.midday.valueobject.user.UpdateUserVO;
+import com.goapps.midday.valueobject.user.UserCount;
 
 @RestController
 public class UserController {
@@ -34,7 +42,8 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
-	
+	@Autowired
+	JwtUtil jwt;
 	
 	@Autowired
 	MessageConfiguration messageConfig;
@@ -63,19 +72,55 @@ public class UserController {
 		}
 		return jwtUtil.generateToken(authRequest.getUsername());
 	}
-	
+	@GetMapping("/jwt/{token}")
+	public String getTokenDetails(@PathVariable String token) throws Exception {
+		jwt.decodeJWT(token);
+		return "success";
+	}
 	@PostMapping("/user")
-	ResponseEntity<?> saveUser(@Validated @RequestBody UserEntity userEntity) {
+	ResponseEntity<?> saveUser(@Validated @RequestBody SaveUserVO saveUserVO) throws Exception{
 		UserEntity savedData = null;
 		try {
 			
-			LOGGER.info(userEntity.toString());
+			UserEntity userEntity = new UserEntity(saveUserVO.getUsername(), saveUserVO.getPassword(),
+					saveUserVO.getSchoolId(), saveUserVO.getRollId(), saveUserVO.getFirstName());
 			userService.validateUserData(userEntity,"save");
-			userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+			userEntity.setPassword(userEntity.getPassword());
 			savedData = userService.saveUser(userEntity);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
-			return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+			throw e;
+		}
+		return new ResponseEntity<>(savedData, HttpStatus.OK);
+	}
+	@PutMapping("/user")
+	ResponseEntity<?> updateUser(@Validated @RequestBody UpdateUserVO updateUserVO) throws Exception{
+		UserEntity userEntity = null;
+		try {
+			userEntity = userService.getUserById(updateUserVO.getUserId());
+			userService.mapUpdatedUserVO(updateUserVO,userEntity); // passed user entity as input parameter
+			userService.validateUserData(userEntity,"save");
+			userEntity = userService.saveUser(userEntity);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			throw e;
+		}
+		return new ResponseEntity<>(userEntity, HttpStatus.OK);
+	}
+	@PostMapping("/admin/user")
+	ResponseEntity<?> saveUserByAdmin(@Validated @RequestBody SaveUserVO saveUserVO) throws Exception{
+		UserEntity savedData = null;
+		try {
+			
+//			LOGGER.info(saveUserVO.toString());
+			UserEntity userEntity = new UserEntity(saveUserVO.getUsername(), saveUserVO.getPassword(),
+					saveUserVO.getSchoolId(), saveUserVO.getRollId(), saveUserVO.getFirstName());
+			userService.validateUserData(userEntity,"save");
+			userEntity.setPassword(userEntity.getPassword());
+			savedData = userService.saveUser(userEntity);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			throw e;
 		}
 		return new ResponseEntity<>(savedData, HttpStatus.OK);
 	}
@@ -139,6 +184,11 @@ public class UserController {
 			new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<>(null, HttpStatus.OK);
+	}
+	@GetMapping("/user/count/{schoolId}")
+	public ResponseEntity<?> getUserCounts(@PathVariable Long schoolId){
+		List<UserCount> userCountList =  userService.getUserCounts(schoolId);
+		return new ResponseEntity<>(userCountList, HttpStatus.OK);
 	}
 	
 }

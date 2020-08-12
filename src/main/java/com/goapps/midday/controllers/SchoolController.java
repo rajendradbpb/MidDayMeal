@@ -20,7 +20,7 @@ import com.goapps.midday.entity.ClassEntity;
 import com.goapps.midday.entity.SchoolEntity;
 import com.goapps.midday.entity.SectionEntity;
 import com.goapps.midday.service.SchoolService;
-import com.goapps.midday.service.UserService;
+import com.goapps.midday.service.user.UserService;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;

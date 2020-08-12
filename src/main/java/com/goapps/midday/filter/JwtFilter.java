@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.goapps.midday.service.UserService;
+import com.goapps.midday.service.user.UserService;
 import com.goapps.midday.utitlity.JwtUtil;
 
 @Component

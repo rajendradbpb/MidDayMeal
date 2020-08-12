@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.goapps.midday.entity.SchoolEntity;
 import com.goapps.midday.entity.UserEntity;
 import com.goapps.midday.service.SchoolService;
-import com.goapps.midday.service.UserService;
+import com.goapps.midday.service.user.UserService;
 import com.goapps.midday.utitlity.ImageProcessing;
 
 @RestController
