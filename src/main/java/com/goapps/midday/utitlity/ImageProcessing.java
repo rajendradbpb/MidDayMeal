@@ -26,7 +26,7 @@ public class ImageProcessing {
 	MessageConfiguration messageConfiguration;
 	
 	Logger LOG = LoggerFactory.getLogger(ImageProcessing.class);
-	public String getImageExtension(String base64String) throws GenericException{
+	public String getImageExtension(String base64String) throws Exception{
 		byte[] data = null;
 		String extension;
 		try {
@@ -52,8 +52,8 @@ public class ImageProcessing {
 			}
 			
 			/*String path = "D:\\data\\test_image." + extension;
-			file = new File(path);
-			return file;
+			File file = new File(path);
+//			return file;
 			// upload file
 			try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
 				outputStream.write(data);
@@ -62,11 +62,11 @@ public class ImageProcessing {
 			}*/
 		} catch (Exception e) {
 			
-			throw new GenericException(e.getMessage());
+			throw e;
 		}
 		return extension;
 	}
-	public void createFileFromBase64(String base64String,String fullPath) throws GenericException{
+	public void createFileFromBase64(String base64String,String fullPath) throws Exception{
 		String[] strings = base64String.split(",");
 		//convert base64 string to binary data
 		byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
@@ -77,7 +77,7 @@ public class ImageProcessing {
 			outputStream.write(data);
 		} catch (IOException e) {
 			LOG.error(e.getMessage());
-			throw new GenericException(e.getMessage());
+			throw e;
 		}
 	}
 	

@@ -17,8 +17,8 @@ delete from school where school_id = 2
 select * from role
 delete from role where role_id = 17
 
--- classes
+-----------------   classes ------------
 select * from classes
 
---  class
+------------------  section ----------------------
 select * from class 

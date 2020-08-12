@@ -8,12 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.goapps.midday.entity.MealEntity;
-import com.goapps.midday.service.MealService;
+import com.goapps.midday.service.meal.MealService;
+import com.goapps.midday.valueobject.meal.SaveMealVO;
 
 @RestController
 public class MealController {
@@ -23,18 +25,31 @@ public class MealController {
 	MealService mealService;
 	
 	
-	@PostMapping("/meal")
-	ResponseEntity<?> saveSystemSource(@Validated @RequestBody MealEntity mealEntity) {
-		MealEntity savedData = null;
+	@PostMapping("/meal")// save meal with basic details
+	ResponseEntity<?> saveMeal(@Validated @RequestBody SaveMealVO saveMealVO) {
+		MealEntity meal = null;
 		try {
-			LOGGER.info(mealEntity.toString());
-			savedData = mealService.saveMeal(mealEntity);
+			mealService.validateMealData(saveMealVO);
+			meal = mealService.mapSaveMealVO(saveMealVO,"save");
+			//process cook
+			meal = mealService.processMealRequest(meal,saveMealVO);
+//			meal = mealService.saveMeal(meal);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
-			return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>(savedData, HttpStatus.OK);
+		return new ResponseEntity<>(meal, HttpStatus.OK);
 	}
+	
+	/*
+	 * @PutMapping("/meal")// update meal with basic details ResponseEntity<?>
+	 * updatedMeal(@Validated @RequestBody SaveMealVO saveMealVO) { MealEntity meal
+	 * = null; try { meal = mealService.mapSaveMealVO(saveMealVO,"update");
+	 * mealService.validateUserData(meal); meal = mealService.saveMeal(meal); }
+	 * catch (Exception e) { LOGGER.error(e.getMessage()); return new
+	 * ResponseEntity<>(e, HttpStatus.BAD_REQUEST); } return new
+	 * ResponseEntity<>(meal, HttpStatus.OK); }
+	 */
 	@GetMapping("/meal")
 	ResponseEntity<?> getAllMeal(@RequestParam(required = false) Long id) {
 		try {

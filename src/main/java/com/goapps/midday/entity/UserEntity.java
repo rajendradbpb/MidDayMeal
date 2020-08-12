@@ -53,7 +53,7 @@ public class UserEntity {
 	private String phone;
 	private String alternatePhone;
 	// teacher
-	private String isClassTeacher;
+	private Boolean isClassTeacher;
 	private Long classId;
 	private Long sectionId;
 	
@@ -209,12 +209,15 @@ public class UserEntity {
 	public void setAlternatePhone(String alternatePhone) {
 		this.alternatePhone = alternatePhone;
 	}
-	public String getIsClassTeacher() {
+	
+	public Boolean getIsClassTeacher() {
 		return isClassTeacher;
 	}
-	public void setIsClassTeacher(String isClassTeacher) {
+
+	public void setIsClassTeacher(Boolean isClassTeacher) {
 		this.isClassTeacher = isClassTeacher;
 	}
+
 	public Long getClassId() {
 		return classId;
 	}

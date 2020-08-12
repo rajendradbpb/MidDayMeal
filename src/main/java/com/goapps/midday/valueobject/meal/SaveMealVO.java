@@ -1,66 +1,35 @@
-package com.goapps.midday.entity;
+package com.goapps.midday.valueobject.meal;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
-
-import com.goapps.midday.exception.InvalidRequestException;
+import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "Meal")
 @NoArgsConstructor
 @AllArgsConstructor
-public class MealEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "mealId")
-	private Long id;
-	
-	
-	@Column(nullable = false)
+public class SaveMealVO {
+
+	@NotNull
 	private Long schoolId;
-	
 	private Date mealDate;
 	private Boolean isCook;
 	private String noCookCause;
+	
+	// cook
+	private List<CookInformation> cookInformation;
 	private String imageBeforeCook;
 	private String imageAfterCook;
 	private String rationImage;
 	
-	@PrePersist
-	void preInsert() {
-	   if (this.getMealDate() == null)
-	       this.setMealDate(new Date());
-	}
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	
 	public Long getSchoolId() {
 		return schoolId;
 	}
 	public void setSchoolId(Long schoolId) {
 		this.schoolId = schoolId;
-	}
-	public String getRationImage() {
-		return rationImage;
-	}
-	public void setRationImage(String rationImage) {
-		this.rationImage = rationImage;
 	}
 	public Date getMealDate() {
 		return mealDate;
@@ -92,5 +61,42 @@ public class MealEntity {
 	public void setImageAfterCook(String imageAfterCook) {
 		this.imageAfterCook = imageAfterCook;
 	}
+	public String getRationImage() {
+		return rationImage;
+	}
+	public void setRationImage(String rationImage) {
+		this.rationImage = rationImage;
+	}
 	
+	
+
+	public List<CookInformation> getCookInformation() {
+		return cookInformation;
+	}
+	public void setCookInformation(List<CookInformation> cookInformation) {
+		this.cookInformation = cookInformation;
+	}
+
+
+
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class CookInformation{
+		private long cookId;
+		private String cookImage;
+		public long getCookId() {
+			return cookId;
+		}
+		public void setCookId(long cookId) {
+			this.cookId = cookId;
+		}
+		public String getCookImage() {
+			return cookImage;
+		}
+		public void setCookImage(String cookImage) {
+			this.cookImage = cookImage;
+		}
+		
+		
+	}
 }

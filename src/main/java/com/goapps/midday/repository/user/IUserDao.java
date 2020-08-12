@@ -10,5 +10,7 @@ import com.goapps.midday.valueobject.user.UserCount;
 
 public interface IUserDao  {
 	List<UserCount> getUserCounts(Long SchoolId);
+	
+	List<UserEntity> getUserByRoleAndSchoolId(Long schoolId,String role);
 
 }

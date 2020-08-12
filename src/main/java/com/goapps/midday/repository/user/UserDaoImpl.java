@@ -12,7 +12,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.goapps.midday.entity.UserEntity;
+import com.goapps.midday.service.user.UserService;
 import com.goapps.midday.valueobject.user.UserCount;
+
+import javassist.expr.NewArray;
 
 @Repository
 public class UserDaoImpl implements IUserDao {
@@ -20,6 +24,9 @@ public class UserDaoImpl implements IUserDao {
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	UserService userService;
 
 	Logger LOG = LoggerFactory.getLogger(UserDaoImpl.class);
 	
@@ -52,4 +59,28 @@ public class UserDaoImpl implements IUserDao {
         return userCountList;
 	}
 
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<UserEntity> getUserByRoleAndSchoolId(Long schoolId, String role) {
+		List<UserEntity> userList = new ArrayList<UserEntity>();
+		try {
+			String sql = "select u.user_id from user u, role r where u.role_id = r.role_id and u.school_id = "
+					+ schoolId + " and r.name = '"+role+"'";
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+			for (Map row : rows) {
+				Long userId = (Long) row.get("user_id");
+				userList.add(userService.getUserById(userId));
+
+			}
+		} catch (DataAccessException e) {
+			LOG.error(e.getMessage());
+			throw e;
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			throw e;
+		}
+
+		return userList;
+	}
 }

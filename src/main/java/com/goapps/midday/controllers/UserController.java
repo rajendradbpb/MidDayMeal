@@ -30,6 +30,7 @@ import com.goapps.midday.service.SchoolService;
 import com.goapps.midday.service.user.UserService;
 import com.goapps.midday.utitlity.Encoder;
 import com.goapps.midday.utitlity.JwtUtil;
+import com.goapps.midday.valueobject.user.AssignClassTeacherVO;
 import com.goapps.midday.valueobject.user.SaveUserVO;
 import com.goapps.midday.valueobject.user.SignupUserVO;
 import com.goapps.midday.valueobject.user.UpdateUserVO;
@@ -186,9 +187,13 @@ public class UserController {
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 	@GetMapping("/user/count/{schoolId}")
-	public ResponseEntity<?> getUserCounts(@PathVariable Long schoolId){
+	public ResponseEntity<?> getUserCounts(@PathVariable(required = true) Long schoolId){
 		List<UserCount> userCountList =  userService.getUserCounts(schoolId);
 		return new ResponseEntity<>(userCountList, HttpStatus.OK);
 	}
-	
+	@PutMapping("/user/assignClassTeacher")
+	public ResponseEntity assignClassTeacher(@RequestBody @Validated AssignClassTeacherVO assignClassTeacher) throws Exception{
+		userService.assignClassTeacher(assignClassTeacher);
+		return new ResponseEntity(HttpStatus.OK);
+	}
 }

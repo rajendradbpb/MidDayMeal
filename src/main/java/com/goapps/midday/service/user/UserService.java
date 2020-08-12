@@ -21,6 +21,7 @@ import com.goapps.midday.mesasge.MessageConfiguration;
 import com.goapps.midday.repository.RoleRepository;
 import com.goapps.midday.repository.user.IUserDao;
 import com.goapps.midday.repository.user.UserRepository;
+import com.goapps.midday.valueobject.user.AssignClassTeacherVO;
 import com.goapps.midday.valueobject.user.UpdateUserVO;
 import com.goapps.midday.valueobject.user.UserCount;
 
@@ -164,6 +165,18 @@ public class UserService implements UserDetailsService {
 	
 	public List<UserCount> getUserCounts(Long SchoolId){
 		return userDao.getUserCounts(SchoolId);
+	}
+
+	public void assignClassTeacher(AssignClassTeacherVO assignClassTeacher) throws Exception{
+		try {
+			UserEntity user = userRepository.findById(assignClassTeacher.getUserId()).get();
+			user.setIsClassTeacher(assignClassTeacher.getIsClassTeacher());
+			user.setClassId(assignClassTeacher.getClassId());
+			user.setSectionId(assignClassTeacher.getSectionId());
+			userRepository.save(user);
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 }

@@ -8,10 +8,38 @@ public class UserMessage {
 	private String rollIdRequired;
 	private String schoolIdRequired;
 	private String passwordConfirmPasswordNotMatched;
+	private String invalidSchoolId;
+	private String invalidNoCookCause;
+	private String noCookMatched;
 	public UserMessage() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public String getNoCookMatched() {
+		return noCookMatched;
+	}
+
+	public void setNoCookMatched(String noCookMatched) {
+		this.noCookMatched = noCookMatched;
+	}
+
+	public String getInvalidNoCookCause() {
+		return invalidNoCookCause;
+	}
+
+	public void setInvalidNoCookCause(String invalidNoCookCause) {
+		this.invalidNoCookCause = invalidNoCookCause;
+	}
+
+	public String getInvalidSchoolId() {
+		return invalidSchoolId;
+	}
+
+	public void setInvalidSchoolId(String invalidSchoolId) {
+		this.invalidSchoolId = invalidSchoolId;
+	}
+
 	public String getIdRequired() {
 		return idRequired;
 	}
