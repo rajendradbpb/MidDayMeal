@@ -100,7 +100,7 @@ public class UserController {
 		try {
 			userEntity = userService.getUserById(updateUserVO.getUserId());
 			userService.mapUpdatedUserVO(updateUserVO,userEntity); // passed user entity as input parameter
-			userService.validateUserData(userEntity,"save");
+			userService.validateUserData(userEntity,"update");
 			userEntity = userService.saveUser(userEntity);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());

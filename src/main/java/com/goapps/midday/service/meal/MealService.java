@@ -2,6 +2,7 @@ package com.goapps.midday.service.meal;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.goapps.midday.config.AppConstants;
 import com.goapps.midday.entity.AttendanceEntity;
 import com.goapps.midday.entity.MealEntity;
+import com.goapps.midday.entity.SchoolEntity;
 import com.goapps.midday.entity.UserEntity;
 import com.goapps.midday.exception.GenericException;
 import com.goapps.midday.exception.InvalidRequestException;
@@ -24,9 +26,12 @@ import com.goapps.midday.mesasge.MessageConfiguration;
 import com.goapps.midday.repository.AttendanceRepository;
 import com.goapps.midday.repository.MealRepository;
 import com.goapps.midday.repository.user.UserDaoImpl;
+import com.goapps.midday.service.SchoolService;
 import com.goapps.midday.utitlity.ImageProcessing;
 import com.goapps.midday.valueobject.meal.SaveMealVO;
 import com.goapps.midday.valueobject.meal.SaveMealVO.CookInformation;
+import com.goapps.midday.valueobject.meal.TakeStudentAttendanceVO;
+import com.goapps.midday.valueobject.meal.TakeStudentAttendanceVO.StudentAttendance;
 
 @Service
 public class MealService {
@@ -44,6 +49,9 @@ public class MealService {
 	
 	@Autowired
 	AttendanceRepository attendanceRepo;
+	
+	@Autowired
+	SchoolService schoolService;
 	
 	@Value("${image.path}")
 	String imagePath;
@@ -191,6 +199,65 @@ public class MealService {
 		}
 		
 		return true;
+	}
+
+	public void takeAttendance(TakeStudentAttendanceVO takeStudentAttendanceVO) {
+		List<AttendanceEntity> attendanceList = new ArrayList<AttendanceEntity>();
+		try {
+			// this is to validate if the meal and school id
+			MealEntity meal = mealRepository.findById(takeStudentAttendanceVO.getMealId()).get();
+			SchoolEntity school = schoolService.getSchoolById(takeStudentAttendanceVO.getSchoolId());
+			
+			// creating attendance for all the students
+			for(StudentAttendance student :takeStudentAttendanceVO.getStudentAttendanceList()) {
+				AttendanceEntity attendance = new AttendanceEntity();
+				attendance.setSchoolId(takeStudentAttendanceVO.getSchoolId());
+				attendance.setMealId(takeStudentAttendanceVO.getMealId());
+				attendance.setUserId(student.getStudentId());
+				attendance.setBookedMeal(student.getBookMeal());
+				attendance.setIsPresent(student.getPresent());
+				attendanceList.add(attendance);
+			}
+			attendanceRepo.saveAll(attendanceList);
+			
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			throw e;
+		}
+		
+	}
+
+	public void confirmAttendance(TakeStudentAttendanceVO takeStudentAttendanceVO) {
+		List<AttendanceEntity> attendanceList = new ArrayList<AttendanceEntity>();
+		try {
+			// this is to validate if the meal and school id
+			MealEntity meal = mealRepository.findById(takeStudentAttendanceVO.getMealId()).get();
+			SchoolEntity school = schoolService.getSchoolById(takeStudentAttendanceVO.getSchoolId());
+			List<Long> studentIds = new ArrayList<Long>();
+			takeStudentAttendanceVO.getStudentAttendanceList().forEach(student->{
+				studentIds.add(student.getStudentId());
+			});
+			LOG.info("Fetching attendance details");
+			attendanceList = attendanceRepo.findByMealIdAndSchoolIdAndUserIdIn(takeStudentAttendanceVO.getMealId(),
+					takeStudentAttendanceVO.getSchoolId(), studentIds);
+			// creating attendance for all the students
+			for(AttendanceEntity attendance :attendanceList) {
+				
+				for(StudentAttendance studentAttendance: takeStudentAttendanceVO.getStudentAttendanceList()) {
+					if(attendance.getUserId() == studentAttendance.getStudentId() && attendance.getBookedMeal()) {
+						attendance.setConfirmedMeal(studentAttendance.getConfirmMeal());
+						// setting it as being sent from UI
+						attendance.setNoMealCause(studentAttendance.getNoMealCause());
+					}
+				}	
+			}
+			attendanceRepo.saveAll(attendanceList); // updating all the content
+			
+		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			throw e;
+		}
+		
 	}
 	
 }

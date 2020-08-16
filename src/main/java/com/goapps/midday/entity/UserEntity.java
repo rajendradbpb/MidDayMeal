@@ -61,6 +61,7 @@ public class UserEntity {
 	private String fatherName;
 	private String motherName;
 	private String parentContactNo;
+	private int rollNo;
 	
 	//bank
 	private String bankAccNo;
@@ -310,6 +311,14 @@ public class UserEntity {
 	}
 	public void setPincode(String pincode) {
 		this.pincode = pincode;
+	}
+
+	public int getRollNo() {
+		return rollNo;
+	}
+
+	public void setRollNo(int rollNo) {
+		this.rollNo = rollNo;
 	}
 	
 	

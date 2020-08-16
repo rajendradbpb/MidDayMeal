@@ -11,11 +11,21 @@ public class UserMessage {
 	private String invalidSchoolId;
 	private String invalidNoCookCause;
 	private String noCookMatched;
+	private String invalidRollNo;
+	private String dataUpdateSuccess;
 	public UserMessage() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
+	public String getDataUpdateSuccess() {
+		return dataUpdateSuccess;
+	}
+
+	public void setDataUpdateSuccess(String dataUpdateSuccess) {
+		this.dataUpdateSuccess = dataUpdateSuccess;
+	}
+
 	public String getNoCookMatched() {
 		return noCookMatched;
 	}
@@ -75,6 +85,14 @@ public class UserMessage {
 	}
 	public void setPasswordConfirmPasswordNotMatched(String passwordConfirmPasswordNotMatched) {
 		this.passwordConfirmPasswordNotMatched = passwordConfirmPasswordNotMatched;
+	}
+
+	public String getInvalidRollNo() {
+		return invalidRollNo;
+	}
+
+	public void setInvalidRollNo(String invalidRollNo) {
+		this.invalidRollNo = invalidRollNo;
 	}
 	
 	

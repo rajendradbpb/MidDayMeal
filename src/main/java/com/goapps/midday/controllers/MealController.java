@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.goapps.midday.entity.MealEntity;
+import com.goapps.midday.mesasge.MessageConfiguration;
 import com.goapps.midday.service.meal.MealService;
 import com.goapps.midday.valueobject.meal.SaveMealVO;
+import com.goapps.midday.valueobject.meal.TakeStudentAttendanceVO;
 
 @RestController
 public class MealController {
@@ -23,6 +25,9 @@ public class MealController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MealController.class);
 	@Autowired
 	MealService mealService;
+	
+	@Autowired
+	MessageConfiguration messageConfig;
 	
 	
 	@PostMapping("/meal")// save meal with basic details
@@ -41,6 +46,27 @@ public class MealController {
 		return new ResponseEntity<>(meal, HttpStatus.OK);
 	}
 	
+	@PutMapping("/meal/takeAttendance")// save meal with basic details
+	ResponseEntity<?> takeAttendance(@Validated @RequestBody TakeStudentAttendanceVO takeStudentAttendanceVO) {
+		try {
+			mealService.takeAttendance(takeStudentAttendanceVO);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<>(messageConfig.getUserMessage().getDataUpdateSuccess(), HttpStatus.OK);
+	}
+	
+	@PutMapping("/meal/confirmAttendance")// save meal with basic details
+	ResponseEntity<?> confirmAttendance(@Validated @RequestBody TakeStudentAttendanceVO takeStudentAttendanceVO) {
+		try {
+			mealService.confirmAttendance(takeStudentAttendanceVO);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<>(messageConfig.getUserMessage().getDataUpdateSuccess(), HttpStatus.OK);
+	}
 	/*
 	 * @PutMapping("/meal")// update meal with basic details ResponseEntity<?>
 	 * updatedMeal(@Validated @RequestBody SaveMealVO saveMealVO) { MealEntity meal

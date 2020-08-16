@@ -29,13 +29,13 @@ import com.goapps.midday.valueobject.user.UserCount;
 public class UserService implements UserDetailsService {
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	RoleRepository roleRepository;
-	
+
 	@Autowired
 	MessageConfiguration messageConfig;
-	
+
 	@Autowired
 	IUserDao userDao;
 
@@ -53,17 +53,18 @@ public class UserService implements UserDetailsService {
 	public UserEntity getUserById(Long id) {
 		UserEntity user = null;
 		try {
-			Optional<UserEntity>  optional  = userRepository.findById(id);
+			Optional<UserEntity> optional = userRepository.findById(id);
 			user = optional.get();
 		} catch (Exception e) {
 			throw e;
 		}
 		return user;
 	}
+
 	public UserEntity getUserByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserEntity user = userRepository.findByUsername(username);
@@ -80,94 +81,98 @@ public class UserService implements UserDetailsService {
 		return roles;
 	}
 
-	
-	public boolean validateUserData(UserEntity user,String operation) throws InvalidRequestException{
+	public boolean validateUserData(UserEntity user, String operation) throws InvalidRequestException {
 		switch (operation) {
 		case "save":
 		case "signup":
-			if(user.getRoleId() == 0) {
+			if (user.getRoleId() == 0) {
 				throw new InvalidRequestException(messageConfig.getUserMessage().getRollIdRequired());
 			}
-			if(user.getSchoolId() == 0) {
+			if (user.getSchoolId() == 0) {
 				throw new InvalidRequestException(messageConfig.getUserMessage().getSchoolIdRequired());
 			}
 			// check for role
-			if(
-					!(roleRepository.findById(user.getRoleId()).get().getName().equals(AppConstants.ROLE_STUDENT)
-					|| roleRepository.findById(user.getRoleId()).get().getName().equals(AppConstants.ROLE_COOK) )
-					&& user.getPassword() == null
-					) {
+			if (!(roleRepository.findById(user.getRoleId()).get().getName().equals(AppConstants.ROLE_STUDENT)
+					|| roleRepository.findById(user.getRoleId()).get().getName().equals(AppConstants.ROLE_COOK))
+					&& user.getPassword() == null) {
 				throw new InvalidRequestException(messageConfig.getUserMessage().getPasswordRequired());
 			}
+
 			break;
-		
+		case "update":
+
+			if ((roleRepository.findById(user.getRoleId()).get().getName().equals(AppConstants.ROLE_STUDENT))
+					&& user.getRollNo() == 0) {
+				throw new InvalidRequestException(messageConfig.getUserMessage().getInvalidRollNo());
+			}
+			break;
 		default:
 			break;
 		}
-		
+
 		return true;
 	}
 
-	public UserEntity mapUpdatedUserVO(UpdateUserVO updateUserVO,UserEntity userEntity) {
-		if(updateUserVO.getFirstName() != null)
+	public UserEntity mapUpdatedUserVO(UpdateUserVO updateUserVO, UserEntity userEntity) {
+		if (updateUserVO.getFirstName() != null)
 			userEntity.setFirstName(updateUserVO.getFirstName());
-		
-		if(updateUserVO.getMiddleName() != null)
+
+		if (updateUserVO.getMiddleName() != null)
 			userEntity.setMiddleName(updateUserVO.getMiddleName());
-		
-		if(updateUserVO.getLastname() != null)
+
+		if (updateUserVO.getLastname() != null)
 			userEntity.setLastname(updateUserVO.getLastname());
-		
-		if(updateUserVO.getEmail() != null)
+
+		if (updateUserVO.getEmail() != null)
 			userEntity.setEmail(updateUserVO.getEmail());
-		
-		if(updateUserVO.getPhone() != null)
+
+		if (updateUserVO.getPhone() != null)
 			userEntity.setPhone(updateUserVO.getPhone());
-		
-		if(updateUserVO.getAlternatePhone() != null)
+
+		if (updateUserVO.getAlternatePhone() != null)
 			userEntity.setAlternatePhone(updateUserVO.getAlternatePhone());
-		
-		if(updateUserVO.getFatherName() != null)
+
+		if (updateUserVO.getFatherName() != null)
 			userEntity.setFatherName(updateUserVO.getFatherName());
-		
-		if(updateUserVO.getMotherName() != null)
+
+		if (updateUserVO.getMotherName() != null)
 			userEntity.setMotherName(updateUserVO.getMotherName());
-		
-		if(updateUserVO.getParentContactNo() != null)
+
+		if (updateUserVO.getParentContactNo() != null)
 			userEntity.setParentContactNo(updateUserVO.getParentContactNo());
-		
-		if(updateUserVO.getBankAccNo() != null)
+
+		if (updateUserVO.getBankAccNo() != null)
 			userEntity.setBankAccNo(updateUserVO.getBankAccNo());
-		
-		if(updateUserVO.getIfsc() != null)
+
+		if (updateUserVO.getIfsc() != null)
 			userEntity.setIfsc(updateUserVO.getIfsc());
-		
-		if(updateUserVO.getPlotNo() != null)
+
+		if (updateUserVO.getPlotNo() != null)
 			userEntity.setPlotNo(updateUserVO.getPlotNo());
-		if(updateUserVO.getCity() != null)
+		if (updateUserVO.getCity() != null)
 			userEntity.setCity(updateUserVO.getCity());
-		if(updateUserVO.getVillage() != null)
+		if (updateUserVO.getVillage() != null)
 			userEntity.setVillage(updateUserVO.getVillage());
-		if(updateUserVO.getStreet() != null)
+		if (updateUserVO.getStreet() != null)
 			userEntity.setStreet(updateUserVO.getStreet());
-		if(updateUserVO.getState() != null)
+		if (updateUserVO.getState() != null)
 			userEntity.setState(updateUserVO.getState());
-		if(updateUserVO.getCountry() != null)
+		if (updateUserVO.getCountry() != null)
 			userEntity.setCountry(updateUserVO.getCountry());
-		if(updateUserVO.getDistrict() != null)
+		if (updateUserVO.getDistrict() != null)
 			userEntity.setDistrict(updateUserVO.getDistrict());
-		
-		if(updateUserVO.getPincode() != null)
+
+		if (updateUserVO.getPincode() != null)
 			userEntity.setPincode(updateUserVO.getPincode());
-		
+
 		return userEntity;
 	}
-	
-	public List<UserCount> getUserCounts(Long SchoolId){
+
+	public List<UserCount> getUserCounts(Long SchoolId) {
 		return userDao.getUserCounts(SchoolId);
 	}
 
-	public void assignClassTeacher(AssignClassTeacherVO assignClassTeacher) throws Exception{
+	public void assignClassTeacher(AssignClassTeacherVO assignClassTeacher) throws Exception {
 		try {
 			UserEntity user = userRepository.findById(assignClassTeacher.getUserId()).get();
 			user.setIsClassTeacher(assignClassTeacher.getIsClassTeacher());
