@@ -7,18 +7,57 @@
 	},
 	"item": [
 		{
-			"name": "save-user",
+			"name": "user-save-admin",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMiIsInNjaG9vbElkIjoyOSwiZXhwIjoxNTk3MTU3MDg3LCJpYXQiOjE1OTcxMjEwODcsInVzZXJuYW1lIjoidXNlcjIiLCJyb2xsSWQiOjE0fQ.cjPL_abhvpJNTUyVcHM_GUxIHUVUMHvIeyVramROfX0",
+						"disabled": true
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\":\"user1\",\n\t\"password\":\"user1\",\n\t\"firstName\":\"user1\"\n}"
+					"raw": "{\n\t\"username\":\"cook5\",\n\t\"password\":\"cook5\",\n\t\"firstName\":\"cook5\",\n\t\"rollId\":19,\n\t\"schoolId\":29\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/admin/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"user"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "user-save",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMiIsInNjaG9vbElkIjoyOSwiZXhwIjoxNTk3MTU3MDg3LCJpYXQiOjE1OTcxMjEwODcsInVzZXJuYW1lIjoidXNlcjIiLCJyb2xsSWQiOjE0fQ.cjPL_abhvpJNTUyVcHM_GUxIHUVUMHvIeyVramROfX0"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"user1\",\n\t\"password\":\"user1\",\n\t\"firstName\":\"user1\",\n\t\"rollId\":14,\n\t\"schoolId\":29\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/user",
@@ -29,6 +68,238 @@
 					"port": "8080",
 					"path": [
 						"user"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "user-signup",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsImV4cCI6MTU5NzIxMjcxMCwiaWF0IjoxNTk3MTc2NzEwfQ.U_J0QvAtsHzVp6qEk34gDabgN7gnFTO_oYedVEmJfTw"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"user1\",\n\t\"password\":\"updated\",\n\t\"confirmPassword\":\"updated\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/user/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"signup"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "meal-save",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"iIdSchool\": 0,\r\n\r\n  \"isCook\": true,\r\n  \"mealDate\": 1597256595955\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/meal",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"meal"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "user-update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsImV4cCI6MTU5NzIxMjcxMCwiaWF0IjoxNTk3MTc2NzEwfQ.U_J0QvAtsHzVp6qEk34gDabgN7gnFTO_oYedVEmJfTw"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"alternatePhone\": \"3333333333\",\r\n  \"bankAccNo\": \"bbbdfgdfg\",\r\n  \"city\": \"dfgdfgdfg\",\r\n  \"country\": \"sdfdsfsf\",\r\n  \"district\": \"stsddsfring\",\r\n  \"email\": \"strinsdfdsfg\",\r\n  \"fatherName\": \"sdfdsf\",\r\n  \"firstName\": \"sdfsdfdsfsd\",\r\n  \"ifsc\": \"sdfsdfsff\",\r\n  \"isClassTeacher\": \"string\",\r\n  \"lastname\": \"sdfsfsdfs\",\r\n  \"middleName\": \"sdfdsfs\",\r\n  \"motherName\": \"erwrwrrw\",\r\n  \"parentContactNo\": \"hjhkhkhjkhjkh\",\r\n  \"phone\": \"dffgdfsfsfsf\",\r\n  \"userId\": 39\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "user-assignClassTeacher",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"classId\": 7,\r\n  \"isClassTeacher\": true,\r\n  \"sectionId\": 12,\r\n  \"userId\": 43\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/user/assignClassTeacher",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"assignClassTeacher"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "user-get",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"user3\",\n\t\"password\":\"user3\",\n\t\"firstName\":\"user3\",\n\t\"rollId\":12,\n\t\"schoolId\":2\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "user-count",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"user3\",\n\t\"password\":\"user3\",\n\t\"firstName\":\"user3\",\n\t\"rollId\":12,\n\t\"schoolId\":2\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/user/count/29",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"count",
+						"29"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get-jwt",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMyIsInNjaG9vbElkIjoyOSwiZXhwIjoxNTk3MDQxMDQwLCJpYXQiOjE1OTcwMDUwNDAsInVzZXJuYW1lIjoidXNlcjMiLCJyb2xsSWQiOjE0fQ.bZkkt7RVkD-r5Ycx6CJTCEokyztHJioh_Axbp6Vgauk"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"user3\",\n\t\"password\":\"user3\",\n\t\"firstName\":\"user3\",\n\t\"rollId\":12,\n\t\"schoolId\":2\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/jwt/eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMyIsInNjaG9vbElkIjoyOSwiZXhwIjoxNTk3MDQxMDQwLCJpYXQiOjE1OTcwMDUwNDAsInVzZXJuYW1lIjoidXNlcjMiLCJyb2xsSWQiOjE0fQ.bZkkt7RVkD-r5Ycx6CJTCEokyztHJioh_Axbp6Vgauk",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"jwt",
+						"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMyIsInNjaG9vbElkIjoyOSwiZXhwIjoxNTk3MDQxMDQwLCJpYXQiOjE1OTcwMDUwNDAsInVzZXJuYW1lIjoidXNlcjMiLCJyb2xsSWQiOjE0fQ.bZkkt7RVkD-r5Ycx6CJTCEokyztHJioh_Axbp6Vgauk"
 					]
 				},
 				"description": ""
@@ -58,6 +329,81 @@
 					"port": "8080",
 					"path": [
 						"school"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "get-school",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMiIsInNjaG9vbElkIjoyOSwiZXhwIjoxNTk3MTU3MDg3LCJpYXQiOjE1OTcxMjEwODcsInVzZXJuYW1lIjoidXNlcjIiLCJyb2xsSWQiOjE0fQ.cjPL_abhvpJNTUyVcHM_GUxIHUVUMHvIeyVramROfX0"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"school1\",\n\t\"country\":\"india\",\n\t\"state\":\"odisha\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/school",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"school"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "user-get-by-schoolId",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"school1\",\n\t\"country\":\"india\",\n\t\"state\":\"odisha\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/school/filter?filter=userId&id=26",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"school",
+						"filter"
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": "userId",
+							"equals": true
+						},
+						{
+							"key": "id",
+							"value": "26",
+							"equals": true
+						}
 					]
 				},
 				"description": ""
@@ -163,6 +509,10 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
 					}
 				],
 				"body": {
