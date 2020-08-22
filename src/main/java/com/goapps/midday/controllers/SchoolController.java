@@ -3,6 +3,8 @@ package com.goapps.midday.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.relation.InvalidRelationIdException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.goapps.midday.entity.ClassEntity;
 import com.goapps.midday.entity.SchoolEntity;
 import com.goapps.midday.entity.SectionEntity;
+import com.goapps.midday.mesasge.MessageConfiguration;
 import com.goapps.midday.service.SchoolService;
 import com.goapps.midday.service.user.UserService;
 
@@ -34,6 +37,9 @@ public class SchoolController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	MessageConfiguration messageConfig;
 	
 	@PostMapping("/school")
 	@ApiOperation(value = "Finds Pets by status",
@@ -66,15 +72,26 @@ public class SchoolController {
 	}
 	
 	@GetMapping("/school/filter")
-	ResponseEntity<?> getSchoolByFilter(@RequestParam(required = true) String filter, @RequestParam(required = true) Long id) {
+	ResponseEntity<?> getSchoolByFilter(@RequestParam(required = true) String filter, String username
+			, Long id) throws InvalidRelationIdException{
 		SchoolEntity schoolEntity = null;
+		long schoolId;
 		try {
 			switch (filter) {
 			case "userId":
-				long schoolId = userService.getUserById(id).getSchoolId();
+				if(id == 0) {
+					throw new InvalidRelationIdException(messageConfig.getUserMessage().getIdRequired());
+				}
+				 schoolId = userService.getUserById(id).getSchoolId();
 				schoolEntity = schoolService.getSchoolById(schoolId);
 				break;
-
+			case "username":
+				if(username == null) {
+					throw new InvalidRelationIdException(messageConfig.getUserMessage().getUsernameRequired());
+				}
+				 schoolId = userService.getUserByUsername(username).getSchoolId();
+				schoolEntity = schoolService.getSchoolById(schoolId);
+				break;
 			default:
 				break;
 			}

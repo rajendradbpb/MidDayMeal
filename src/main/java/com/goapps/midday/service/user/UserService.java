@@ -84,17 +84,29 @@ public class UserService implements UserDetailsService {
 	public boolean validateUserData(UserEntity user, String operation) throws InvalidRequestException {
 		switch (operation) {
 		case "save":
-		case "signup":
 			if (user.getRoleId() == 0) {
 				throw new InvalidRequestException(messageConfig.getUserMessage().getRollIdRequired());
 			}
 			if (user.getSchoolId() == 0) {
 				throw new InvalidRequestException(messageConfig.getUserMessage().getSchoolIdRequired());
 			}
+		case "signup":
 			// check for role
-			if (!(roleRepository.findById(user.getRoleId()).get().getName().equals(AppConstants.ROLE_STUDENT)
+			if (user.getRoleId() == 0) {
+				throw new InvalidRequestException(messageConfig.getUserMessage().getRollIdRequired());
+			}
+			if (user.getSchoolId() == 0) {
+				throw new InvalidRequestException(messageConfig.getUserMessage().getSchoolIdRequired());
+			}
+
+			// restrict student and cook for sign up
+			if ((roleRepository.findById(user.getRoleId()).get().getName().equals(AppConstants.ROLE_STUDENT)
 					|| roleRepository.findById(user.getRoleId()).get().getName().equals(AppConstants.ROLE_COOK))
-					&& user.getPassword() == null) {
+				) {
+				throw new InvalidRequestException(messageConfig.getUserMessage().getInvalidUserForSignUp());
+			}
+			// for all other usera password is required
+			else if (user.getPassword() == null) {
 				throw new InvalidRequestException(messageConfig.getUserMessage().getPasswordRequired());
 			}
 
@@ -182,6 +194,11 @@ public class UserService implements UserDetailsService {
 		} catch (Exception e) {
 			throw e;
 		}
+	}
+
+	public Long getRoleIdByName(String roleName) {
+		Long id = roleRepository.getRoleByName(roleName).get(0).getId();
+		return id;
 	}
 
 }

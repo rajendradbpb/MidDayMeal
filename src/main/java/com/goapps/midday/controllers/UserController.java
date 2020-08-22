@@ -23,14 +23,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.goapps.midday.config.AppConstants;
 import com.goapps.midday.entity.AuthRequest;
 import com.goapps.midday.entity.RoleEntity;
+import com.goapps.midday.entity.SchoolEntity;
 import com.goapps.midday.entity.UserEntity;
 import com.goapps.midday.exception.InvalidRequestException;
 import com.goapps.midday.mesasge.MessageConfiguration;
+import com.goapps.midday.repository.user.UserRepository;
 import com.goapps.midday.service.SchoolService;
 import com.goapps.midday.service.user.UserService;
 import com.goapps.midday.utitlity.Encoder;
 import com.goapps.midday.utitlity.JwtUtil;
 import com.goapps.midday.valueobject.user.AssignClassTeacherVO;
+import com.goapps.midday.valueobject.user.SaveSchoolAdminUserVO;
 import com.goapps.midday.valueobject.user.SaveUserVO;
 import com.goapps.midday.valueobject.user.SignupUserVO;
 import com.goapps.midday.valueobject.user.UpdateUserVO;
@@ -84,7 +87,7 @@ public class UserController {
 		try {
 			
 			UserEntity userEntity = new UserEntity(saveUserVO.getUsername(), saveUserVO.getPassword(),
-					saveUserVO.getSchoolId(), saveUserVO.getRollId(), saveUserVO.getFirstName());
+					saveUserVO.getSchoolId(), saveUserVO.getRoleId(), saveUserVO.getFirstName());
 			userService.validateUserData(userEntity,"save");
 			userEntity.setPassword(userEntity.getPassword());
 			savedData = userService.saveUser(userEntity);
@@ -109,21 +112,32 @@ public class UserController {
 		return new ResponseEntity<>(userEntity, HttpStatus.OK);
 	}
 	@PostMapping("/admin/user")
-	ResponseEntity<?> saveUserByAdmin(@Validated @RequestBody SaveUserVO saveUserVO) throws Exception{
-		UserEntity savedData = null;
+	ResponseEntity<?> saveUserByAdmin(@Validated @RequestBody SaveSchoolAdminUserVO saveSchoolAdminUserVO) throws Exception{
+		
 		try {
+			// check school
+			SchoolEntity school = null;
+			school = schoolService.findSchoolByName(saveSchoolAdminUserVO.getSchoolName());
+			// save school
+			if(school == null)
+				school  = schoolService.saveSchoolByName(saveSchoolAdminUserVO.getSchoolName());
+			else {
+				LOGGER.info("School {} is already saved!",saveSchoolAdminUserVO.getSchoolName());
+			}
+			// get role for school-admin role
+			Long roleId = userService.getRoleIdByName("school-admin");
+			//saving user
+			UserEntity user = new UserEntity();
+			user.setSchoolId(school.getId());
+			user.setRoleId(roleId);
+			user.setUsername(saveSchoolAdminUserVO.getUsername());
+			userService.saveUser(user);
 			
-//			LOGGER.info(saveUserVO.toString());
-			UserEntity userEntity = new UserEntity(saveUserVO.getUsername(), saveUserVO.getPassword(),
-					saveUserVO.getSchoolId(), saveUserVO.getRollId(), saveUserVO.getFirstName());
-			userService.validateUserData(userEntity,"save");
-			userEntity.setPassword(userEntity.getPassword());
-			savedData = userService.saveUser(userEntity);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 			throw e;
 		}
-		return new ResponseEntity<>(savedData, HttpStatus.OK);
+		return new ResponseEntity<>(messageConfig.getUserMessage().getDataUpdateSuccess(), HttpStatus.OK);
 	}
 	@PostMapping("/user/signup")
 	ResponseEntity<?> signUpUser(@Validated @RequestBody SignupUserVO signupUser) {

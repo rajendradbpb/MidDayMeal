@@ -13,11 +13,20 @@ public class UserMessage {
 	private String noCookMatched;
 	private String invalidRollNo;
 	private String dataUpdateSuccess;
+	private String invalidUserForSignUp;
 	public UserMessage() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
+	public String getInvalidUserForSignUp() {
+		return invalidUserForSignUp;
+	}
+
+	public void setInvalidUserForSignUp(String invalidUserForSignUp) {
+		this.invalidUserForSignUp = invalidUserForSignUp;
+	}
+
 	public String getDataUpdateSuccess() {
 		return dataUpdateSuccess;
 	}

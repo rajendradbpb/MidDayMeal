@@ -11,7 +11,7 @@ public class SaveUserVO {
 	private String password;
 	private String firstName;
 	private Long schoolId;
-	private Long rollId;
+	private Long roleId;
 	public String getUsername() {
 		return username;
 	}
@@ -36,12 +36,13 @@ public class SaveUserVO {
 	public void setSchoolId(Long schoolId) {
 		this.schoolId = schoolId;
 	}
-	public Long getRollId() {
-		return rollId;
+	public Long getRoleId() {
+		return roleId;
 	}
-	public void setRollId(Long rollId) {
-		this.rollId = rollId;
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
 	}
+	
 	
 	
 	

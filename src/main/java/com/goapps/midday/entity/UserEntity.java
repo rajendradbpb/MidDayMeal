@@ -37,14 +37,14 @@ public class UserEntity {
 	@Column(nullable = false,unique = true)
 	private String username;
 	
-	@Column(nullable = false)
+	//@Column(nullable = false)
 	@JsonIgnore
 	private String password;
 	
 	private long schoolId;
 	private long roleId;
 
-	@Column(nullable = false)
+	//@Column(nullable = false)
 	private String firstName;
 	private String lastname;
 	private String middleName;

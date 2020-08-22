@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +71,18 @@ public class SchoolService {
 				.collect(Collectors.toList());
 		return list;
 	}*/
+	public SchoolEntity saveSchoolByName(String schoolName) {
+		SchoolEntity schoolEntity = new SchoolEntity();
+		schoolEntity.setName(schoolName);
+		schoolEntity = schoolRepository.save(schoolEntity);
+		return schoolEntity;
+		
+	}
 	
+	public SchoolEntity findSchoolByName(String schoolName) {
+		SchoolEntity schoolEntity = schoolRepository.findSchoolByName(schoolName);
+		return schoolEntity;
+		
+	}
 	
 }

@@ -30,11 +30,12 @@ public class SchoolEntity {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@NotNull
+	@Column(nullable = false, unique = true)
 	private String name;
-	@NotNull
+	
+	//@NotNull
 	private String country;
-	@NotNull
+	//@NotNull
 	private String state;
 	
 	private String city;
